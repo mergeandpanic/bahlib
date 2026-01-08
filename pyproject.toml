@@ -1,0 +1,66 @@
+[build-system]
+requires = ["setuptools>=61.0", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "bahlib"
+version = "0.1.0"
+description = "Biometric Anonymizer Hub Library - 100% local face anonymization"
+readme = "README.md"
+license = {text = "MIT"}
+requires-python = ">=3.8"
+keywords = [
+    "face-detection",
+    "anonymization",
+    "privacy",
+    "blur",
+    "mediapipe",
+    "opencv",
+    "biometric",
+    "gdpr",
+    "ccpa"
+]
+classifiers = [
+    "Development Status :: 4 - Beta",
+    "Intended Audience :: Developers",
+    "License :: OSI Approved :: MIT License",
+    "Operating System :: OS Independent",
+    "Programming Language :: Python :: 3",
+    "Programming Language :: Python :: 3.8",
+    "Programming Language :: Python :: 3.9",
+    "Programming Language :: Python :: 3.10",
+    "Programming Language :: Python :: 3.11",
+    "Programming Language :: Python :: 3.12",
+    "Topic :: Scientific/Engineering :: Image Processing",
+    "Topic :: Security",
+]
+dependencies = [
+    "opencv-python>=4.5.0",
+    "mediapipe>=0.10.0",
+    "numpy>=1.19.0",
+]
+
+[project.optional-dependencies]
+dev = [
+    "pytest>=7.0.0",
+    "pytest-cov>=4.0.0",
+]
+
+[project.scripts]
+bahlib = "bahlib.cli:main"
+
+[project.urls]
+Homepage = "https://github.com/mergeandpanic/bahlib"
+Documentation = "https://github.com/mergeandpanic/bahlib#readme"
+Repository = "https://github.com/mergeandpanic/bahlib"
+Issues = "https://github.com/mergeandpanic/bahlib/issues"
+
+[tool.setuptools.packages.find]
+where = ["."]
+include = ["bahlib*"]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+python_files = ["test_*.py"]
+addopts = "-v --tb=short"
+

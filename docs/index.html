@@ -1,0 +1,1047 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Bahlib - Biometric Anonymizer Hub Library</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --pink-light: #FFE4EC;
+            --pink-mid: #FFB8D0;
+            --pink-accent: #FF6B9D;
+            --purple-light: #E8D5F2;
+            --purple-mid: #C9A7EB;
+            --purple-accent: #9B6DD1;
+            --blue-light: #D4E5FF;
+            --blue-accent: #7EB5FF;
+            --yellow-accent: #FFE066;
+            --text-dark: #4A3F55;
+            --text-mid: #6B5F7A;
+            --text-light: #9B8FAA;
+            --white: #FFFFFF;
+            --bg-cream: #FFF9FB;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        html {
+            scroll-behavior: smooth;
+        }
+
+        body {
+            font-family: 'Nunito', sans-serif;
+            background: var(--bg-cream);
+            color: var(--text-dark);
+            line-height: 1.6;
+            overflow-x: hidden;
+        }
+
+        /* Navbar */
+        nav {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            background: var(--white);
+            padding: 0.75rem 2rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            z-index: 1000;
+            box-shadow: 0 2px 20px rgba(255, 107, 157, 0.1);
+        }
+
+        .logo {
+            height: 50px;
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 2rem;
+            align-items: center;
+        }
+
+        .nav-links a {
+            text-decoration: none;
+            color: var(--text-mid);
+            font-weight: 600;
+            font-size: 0.95rem;
+            transition: color 0.3s;
+        }
+
+        .nav-links a:hover {
+            color: var(--pink-accent);
+        }
+
+        .nav-btn {
+            background: linear-gradient(135deg, var(--pink-accent), var(--purple-accent));
+            color: white !important;
+            padding: 0.6rem 1.2rem;
+            border-radius: 25px;
+            font-weight: 700;
+            transition: transform 0.3s, box-shadow 0.3s;
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .nav-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 20px rgba(255, 107, 157, 0.4);
+        }
+
+        .nav-btn svg {
+            width: 18px;
+            height: 18px;
+            fill: currentColor;
+        }
+
+        /* Hero Section */
+        .hero {
+            padding-top: 70px;
+            background: linear-gradient(180deg, var(--pink-light) 0%, var(--purple-light) 100%);
+        }
+
+        .hero-image-container {
+            max-width: 900px;
+            margin: 0 auto;
+            padding: 2rem 2rem 0;
+        }
+
+        .hero-image {
+            width: 100%;
+            display: block;
+            border-radius: 16px;
+            box-shadow: 0 10px 40px rgba(155, 109, 209, 0.2);
+        }
+
+        .hero-content {
+            padding: 2rem 2rem 3rem;
+            text-align: center;
+        }
+
+        .hero-description {
+            max-width: 800px;
+            margin: 0 auto 2rem;
+        }
+
+        .hero-description p {
+            font-size: 1.15rem;
+            color: var(--text-mid);
+            line-height: 1.8;
+        }
+
+        .hero-description p strong {
+            color: var(--text-dark);
+        }
+
+        .btn-group {
+            display: flex;
+            gap: 1rem;
+            flex-wrap: wrap;
+            justify-content: center;
+            margin-bottom: 2rem;
+        }
+
+        .btn {
+            padding: 1rem 2rem;
+            border-radius: 30px;
+            font-weight: 700;
+            font-size: 1rem;
+            text-decoration: none;
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            transition: all 0.3s;
+            cursor: pointer;
+            border: none;
+            font-family: inherit;
+        }
+
+        .btn-primary {
+            background: linear-gradient(135deg, var(--pink-accent), var(--purple-accent));
+            color: white;
+            box-shadow: 0 5px 25px rgba(255, 107, 157, 0.4);
+        }
+
+        .btn-primary:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 8px 30px rgba(255, 107, 157, 0.5);
+        }
+
+        .btn-secondary {
+            background: var(--white);
+            color: var(--text-dark);
+            border: 2px solid var(--pink-mid);
+        }
+
+        .btn-secondary:hover {
+            background: var(--pink-light);
+            border-color: var(--pink-accent);
+        }
+
+        .install-cmd {
+            background: var(--white);
+            border-radius: 15px;
+            padding: 1rem 1.5rem;
+            display: inline-flex;
+            align-items: center;
+            gap: 1rem;
+            box-shadow: 0 5px 30px rgba(155, 109, 209, 0.15);
+        }
+
+        .install-cmd code {
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 0.95rem;
+            color: var(--purple-accent);
+        }
+
+        .install-cmd button {
+            background: none;
+            border: none;
+            cursor: pointer;
+            font-size: 1.2rem;
+            opacity: 0.6;
+            transition: opacity 0.3s;
+        }
+
+        .install-cmd button:hover {
+            opacity: 1;
+        }
+
+        /* Code Preview */
+        .code-preview {
+            background: linear-gradient(145deg, #2D2640 0%, #1E1830 100%);
+            border-radius: 20px;
+            padding: 1.5rem;
+            margin-top: 2rem;
+            max-width: 600px;
+            width: 100%;
+            margin-left: auto;
+            margin-right: auto;
+            box-shadow: 0 20px 60px rgba(30, 24, 48, 0.3);
+        }
+
+        .code-preview .window-dots {
+            display: flex;
+            gap: 8px;
+            margin-bottom: 1rem;
+        }
+
+        .code-preview .dot {
+            width: 12px;
+            height: 12px;
+            border-radius: 50%;
+        }
+
+        .code-preview .dot:nth-child(1) { background: #FF6B6B; }
+        .code-preview .dot:nth-child(2) { background: #FFE066; }
+        .code-preview .dot:nth-child(3) { background: #6BCB77; }
+
+        .code-preview pre {
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 0.85rem;
+            line-height: 1.8;
+            overflow-x: auto;
+        }
+
+        .code-preview .comment { color: #6B5F7A; }
+        .code-preview .keyword { color: var(--pink-accent); }
+        .code-preview .string { color: #6BCB77; }
+        .code-preview .function { color: var(--blue-accent); }
+        .code-preview .var { color: var(--yellow-accent); }
+        .code-preview .plain { color: #E8D5F2; }
+
+        /* Features Section */
+        .features {
+            padding: 6rem 2rem;
+            background: var(--white);
+        }
+
+        .section-header {
+            text-align: center;
+            margin-bottom: 4rem;
+        }
+
+        .section-badge {
+            display: inline-block;
+            background: var(--pink-light);
+            color: var(--pink-accent);
+            padding: 0.4rem 1rem;
+            border-radius: 15px;
+            font-size: 0.85rem;
+            font-weight: 700;
+            margin-bottom: 1rem;
+        }
+
+        .section-header h2 {
+            font-size: 2.2rem;
+            font-weight: 800;
+        }
+
+        .section-header h2 .gradient {
+            background: linear-gradient(135deg, var(--pink-accent), var(--purple-accent));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .section-header p {
+            color: var(--text-mid);
+            margin-top: 0.5rem;
+        }
+
+        .features-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 1.5rem;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .feature-card {
+            background: var(--bg-cream);
+            border-radius: 20px;
+            padding: 2rem;
+            transition: transform 0.3s, box-shadow 0.3s;
+            border: 2px solid transparent;
+        }
+
+        .feature-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 15px 40px rgba(255, 107, 157, 0.15);
+            border-color: var(--pink-light);
+        }
+
+        .feature-icon {
+            width: 50px;
+            height: 50px;
+            background: linear-gradient(135deg, var(--pink-light), var(--purple-light));
+            border-radius: 15px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.5rem;
+            margin-bottom: 1rem;
+        }
+
+        .feature-card h3 {
+            font-size: 1.1rem;
+            font-weight: 700;
+            margin-bottom: 0.5rem;
+            color: var(--text-dark);
+        }
+
+        .feature-card p {
+            font-size: 0.9rem;
+            color: var(--text-mid);
+        }
+
+        /* Installation Section */
+        .installation {
+            padding: 6rem 2rem;
+            background: linear-gradient(180deg, var(--pink-light) 0%, var(--purple-light) 100%);
+        }
+
+        .install-steps {
+            max-width: 700px;
+            margin: 0 auto;
+        }
+
+        .install-step {
+            background: var(--white);
+            border-radius: 15px;
+            padding: 1.5rem;
+            margin-bottom: 1rem;
+            display: flex;
+            align-items: flex-start;
+            gap: 1rem;
+            box-shadow: 0 5px 20px rgba(155, 109, 209, 0.1);
+        }
+
+        .step-number {
+            width: 35px;
+            height: 35px;
+            background: linear-gradient(135deg, var(--pink-accent), var(--purple-accent));
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-weight: 700;
+            flex-shrink: 0;
+        }
+
+        .step-content h4 {
+            font-weight: 700;
+            margin-bottom: 0.5rem;
+        }
+
+        .step-content code {
+            font-family: 'JetBrains Mono', monospace;
+            background: linear-gradient(145deg, #2D2640 0%, #1E1830 100%);
+            color: var(--yellow-accent);
+            padding: 0.75rem 1rem;
+            border-radius: 10px;
+            display: block;
+            font-size: 0.9rem;
+        }
+
+        /* Usage Section */
+        .usage {
+            padding: 6rem 2rem;
+            background: var(--white);
+        }
+
+        .usage-tabs {
+            display: flex;
+            justify-content: center;
+            gap: 0.5rem;
+            margin-bottom: 2rem;
+        }
+
+        .tab-btn {
+            padding: 0.75rem 1.5rem;
+            border-radius: 25px;
+            border: 2px solid var(--pink-mid);
+            background: var(--white);
+            color: var(--text-mid);
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s;
+            font-family: inherit;
+        }
+
+        .tab-btn.active, .tab-btn:hover {
+            background: linear-gradient(135deg, var(--pink-accent), var(--purple-accent));
+            color: white;
+            border-color: transparent;
+        }
+
+        .usage-content {
+            max-width: 900px;
+            margin: 0 auto;
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 2rem;
+            align-items: start;
+        }
+
+        @media (max-width: 768px) {
+            .usage-content {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        .usage-info h3 {
+            font-size: 1.5rem;
+            font-weight: 800;
+            margin-bottom: 1rem;
+        }
+
+        .usage-info p {
+            color: var(--text-mid);
+            margin-bottom: 1rem;
+        }
+
+        .usage-info ul {
+            list-style: none;
+        }
+
+        .usage-info li {
+            padding: 0.5rem 0;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            color: var(--text-mid);
+        }
+
+        .usage-info li::before {
+            content: '→';
+            color: var(--pink-accent);
+            font-weight: bold;
+        }
+
+        .usage-code {
+            background: linear-gradient(145deg, #2D2640 0%, #1E1830 100%);
+            border-radius: 20px;
+            padding: 1.5rem;
+            box-shadow: 0 20px 60px rgba(30, 24, 48, 0.3);
+        }
+
+        .usage-code .window-dots {
+            display: flex;
+            gap: 8px;
+            margin-bottom: 1rem;
+        }
+
+        .usage-code .dot {
+            width: 10px;
+            height: 10px;
+            border-radius: 50%;
+        }
+
+        .usage-code .dot:nth-child(1) { background: #FF6B6B; }
+        .usage-code .dot:nth-child(2) { background: #FFE066; }
+        .usage-code .dot:nth-child(3) { background: #6BCB77; }
+
+        .usage-code pre {
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 0.8rem;
+            line-height: 1.7;
+            overflow-x: auto;
+            color: #E8D5F2;
+        }
+
+        .tab-content {
+            display: none;
+        }
+
+        .tab-content.active {
+            display: block;
+        }
+
+        /* Example Section */
+        .example {
+            padding: 4rem 2rem;
+            background: linear-gradient(180deg, var(--purple-light) 0%, var(--pink-light) 100%);
+        }
+
+        .example-container {
+            max-width: 900px;
+            margin: 0 auto;
+        }
+
+        .examples-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 2rem;
+        }
+
+        @media (max-width: 768px) {
+            .examples-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        .example-item {
+            background: var(--white);
+            border-radius: 16px;
+            padding: 1.25rem;
+            box-shadow: 0 10px 30px rgba(155, 109, 209, 0.15);
+        }
+
+        .example-item h4 {
+            font-size: 0.95rem;
+            font-weight: 700;
+            color: var(--text-dark);
+            margin-bottom: 0.5rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .example-item .method-tag {
+            font-size: 0.7rem;
+            background: linear-gradient(135deg, var(--pink-accent), var(--purple-accent));
+            color: white;
+            padding: 0.2rem 0.5rem;
+            border-radius: 10px;
+            font-weight: 600;
+        }
+
+        .example-comparison {
+            display: grid;
+            grid-template-columns: 1fr auto 1fr;
+            gap: 0.75rem;
+            align-items: center;
+        }
+
+        .example-card {
+            background: var(--bg-cream);
+            border-radius: 10px;
+            overflow: hidden;
+        }
+
+        .example-card img {
+            width: 100%;
+            height: 140px;
+            object-fit: cover;
+            display: block;
+        }
+
+        .example-label {
+            padding: 0.4rem;
+            text-align: center;
+            font-weight: 600;
+            font-size: 0.75rem;
+            color: var(--text-mid);
+        }
+
+        .example-label.after {
+            background: linear-gradient(135deg, var(--pink-light), var(--purple-light));
+            color: var(--purple-accent);
+        }
+
+        .example-arrow {
+            font-size: 1.5rem;
+            color: var(--pink-accent);
+        }
+
+        .example-cmd {
+            margin-top: 0.75rem;
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 0.7rem;
+            background: linear-gradient(145deg, #2D2640 0%, #1E1830 100%);
+            color: var(--yellow-accent);
+            padding: 0.5rem 0.75rem;
+            border-radius: 8px;
+            overflow-x: auto;
+        }
+
+        /* Footer */
+        footer {
+            padding: 3rem 2rem;
+            background: linear-gradient(145deg, #2D2640 0%, #1E1830 100%);
+            text-align: center;
+            color: var(--purple-light);
+        }
+
+        footer h3 {
+            font-size: 1.5rem;
+            font-weight: 800;
+            margin-bottom: 0.5rem;
+            color: var(--white);
+        }
+
+        footer p {
+            font-size: 0.9rem;
+            margin-bottom: 1rem;
+        }
+
+        .footer-links {
+            display: flex;
+            justify-content: center;
+            gap: 1.5rem;
+            margin-top: 1rem;
+        }
+
+        .footer-links a {
+            color: var(--purple-light);
+            text-decoration: none;
+            font-weight: 600;
+            transition: color 0.3s;
+        }
+
+        .footer-links a:hover {
+            color: var(--pink-accent);
+        }
+
+        .footer-badge {
+            display: inline-block;
+            background: rgba(255, 255, 255, 0.1);
+            padding: 0.4rem 0.8rem;
+            border-radius: 10px;
+            font-size: 0.8rem;
+            margin-top: 1rem;
+        }
+
+        /* Mobile adjustments */
+        @media (max-width: 768px) {
+            nav {
+                padding: 0.5rem 1rem;
+            }
+
+            .logo {
+                height: 40px;
+            }
+
+            .nav-links {
+                gap: 1rem;
+            }
+
+            .nav-links a:not(.nav-btn) {
+                display: none;
+            }
+
+            .hero-content {
+                padding: 2rem 1rem 3rem;
+            }
+
+            .install-cmd {
+                flex-direction: column;
+                text-align: center;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Navbar -->
+    <nav>
+        <img src="bahlib-logo.png" alt="Bahlib Logo" class="logo">
+        <div class="nav-links">
+            <a href="#features">Features</a>
+            <a href="#install">Install</a>
+            <a href="#usage">Usage</a>
+            <a href="#example">Example</a>
+            <a href="https://github.com/mergeandpanic/bahlib" class="nav-btn">
+                <svg viewBox="0 0 16 16" xmlns="http://www.w3.org/2000/svg">
+                    <path d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.013 8.013 0 0016 8c0-4.42-3.58-8-8-8z"/>
+                </svg>
+                GitHub
+            </a>
+        </div>
+    </nav>
+
+    <!-- Hero Section -->
+    <section class="hero">
+        <div class="hero-image-container">
+            <img src="bahlib-full.png" alt="Bahlib - Biometric Anonymizer Hub Library" class="hero-image">
+        </div>
+        
+        <div class="hero-content">
+            <div class="hero-description">
+                <p>
+                    A high-performance, lightweight Python library for <strong>100% local biometric anonymization</strong>. 
+                    Bahlib automatically detects human faces in images and videos, applying smooth Gaussian blur 
+                    to protect privacy—without ever sending data to third-party servers. Features include 
+                    <strong>multi-scale detection</strong> for group photos, <strong>tiled processing</strong> for small faces, 
+                    and <strong>feathered blending</strong> for natural-looking results.
+                </p>
+            </div>
+
+            <div class="btn-group">
+                <a href="#install" class="btn btn-primary">Get Started</a>
+                <a href="https://github.com/mergeandpanic/bahlib" class="btn btn-secondary">View on GitHub</a>
+            </div>
+
+            <div class="install-cmd">
+                <code>pip install bahlib</code>
+                <button onclick="navigator.clipboard.writeText('pip install bahlib')" title="Copy to clipboard">📋</button>
+            </div>
+
+            <div class="code-preview">
+                <div class="window-dots">
+                    <span class="dot"></span>
+                    <span class="dot"></span>
+                    <span class="dot"></span>
+                </div>
+                <pre><span class="comment"># Anonymize faces in just 3 lines</span>
+<span class="keyword">from</span> <span class="plain">bahlib</span> <span class="keyword">import</span> <span class="function">Bahlib</span>
+
+<span class="keyword">with</span> <span class="function">Bahlib</span>() <span class="keyword">as</span> <span class="var">bh</span>:
+    <span class="var">result</span> = <span class="var">bh</span>.<span class="function">anonymize</span>(<span class="string">"photo.jpg"</span>)
+    
+<span class="comment"># Save your privacy-protected image</span>
+<span class="plain">cv2</span>.<span class="function">imwrite</span>(<span class="string">"anonymous.jpg"</span>, <span class="var">result</span>)</pre>
+            </div>
+        </div>
+    </section>
+
+    <!-- Features Section -->
+    <section class="features" id="features">
+        <div class="section-header">
+            <span class="section-badge">Features</span>
+            <h2>Built for <span class="gradient">Privacy-First</span> Development</h2>
+            <p>Everything you need to protect identities in images and videos</p>
+        </div>
+
+        <div class="features-grid">
+            <div class="feature-card">
+                <div class="feature-icon">🔒</div>
+                <h3>100% Local Processing</h3>
+                <p>All face detection and blurring happens entirely on your machine. No cloud uploads, no API calls, complete data sovereignty.</p>
+            </div>
+
+            <div class="feature-card">
+                <div class="feature-icon">🎯</div>
+                <h3>Smooth Blending</h3>
+                <p>Feathered elliptical masks create natural-looking blur that seamlessly blends with surrounding pixels.</p>
+            </div>
+
+            <div class="feature-card">
+                <div class="feature-icon">👥</div>
+                <h3>Multi-Scale Detection</h3>
+                <p>Advanced tiled detection algorithm finds faces of all sizes, even in crowded group photos with small faces.</p>
+            </div>
+
+            <div class="feature-card">
+                <div class="feature-icon">🎬</div>
+                <h3>Video Support</h3>
+                <p>Process video files frame-by-frame or run real-time anonymization on live webcam feeds.</p>
+            </div>
+
+            <div class="feature-card">
+                <div class="feature-icon">📁</div>
+                <h3>Batch Processing</h3>
+                <p>Anonymize entire directories of images with a single command, with progress tracking and recursive support.</p>
+            </div>
+
+            <div class="feature-card">
+                <div class="feature-icon">💻</div>
+                <h3>CLI & Python API</h3>
+                <p>Use from the command line for quick tasks, or integrate the Python API into your applications.</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- Installation Section -->
+    <section class="installation" id="install">
+        <div class="section-header">
+            <span class="section-badge">Installation</span>
+            <h2>Get Started in <span class="gradient">Seconds</span></h2>
+        </div>
+
+        <div class="install-steps">
+            <div class="install-step">
+                <span class="step-number">1</span>
+                <div class="step-content">
+                    <h4>Install the package</h4>
+                    <code>pip install bahlib</code>
+                </div>
+            </div>
+
+            <div class="install-step">
+                <span class="step-number">2</span>
+                <div class="step-content">
+                    <h4>Import in your code</h4>
+                    <code>from bahlib import Bahlib</code>
+                </div>
+            </div>
+
+            <div class="install-step">
+                <span class="step-number">3</span>
+                <div class="step-content">
+                    <h4>Anonymize faces</h4>
+                    <code>result = Bahlib().anonymize("photo.jpg")</code>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Usage Section -->
+    <section class="usage" id="usage">
+        <div class="section-header">
+            <span class="section-badge">Usage</span>
+            <h2>Three Simple <span class="gradient">Operations</span></h2>
+            <p>Master the library with just three concepts</p>
+        </div>
+
+        <div class="usage-tabs">
+            <button class="tab-btn active" onclick="showTab('python')">Python API</button>
+            <button class="tab-btn" onclick="showTab('cli')">CLI</button>
+            <button class="tab-btn" onclick="showTab('video')">Video</button>
+        </div>
+
+        <div id="python" class="tab-content active">
+            <div class="usage-content">
+                <div class="usage-info">
+                    <h3>Python API</h3>
+                    <p>Integrate face anonymization into your Python applications with a clean, intuitive API.</p>
+                    <ul>
+                        <li>Context manager for automatic resource cleanup</li>
+                        <li>Accepts file paths or numpy arrays</li>
+                        <li>Configurable blur strength and feathering</li>
+                        <li>Multi-scale and tiled detection for group photos</li>
+                    </ul>
+                </div>
+                <div class="usage-code">
+                    <div class="window-dots">
+                        <span class="dot"></span>
+                        <span class="dot"></span>
+                        <span class="dot"></span>
+                    </div>
+                    <pre><span class="keyword">from</span> bahlib <span class="keyword">import</span> Bahlib
+<span class="keyword">import</span> cv2
+
+<span class="comment"># Basic usage</span>
+<span class="keyword">with</span> Bahlib() <span class="keyword">as</span> bh:
+    result = bh.anonymize(<span class="string">"photo.jpg"</span>)
+    cv2.imwrite(<span class="string">"output.jpg"</span>, result)
+
+<span class="comment"># Group photos with small faces</span>
+<span class="keyword">with</span> Bahlib(min_detection_confidence=<span class="var">0.3</span>) <span class="keyword">as</span> bh:
+    result = bh.anonymize(
+        <span class="string">"group.jpg"</span>,
+        blur_strength=<span class="var">71</span>,
+        feather_amount=<span class="var">0.4</span>,
+        tiled=<span class="var">True</span>,
+        tile_size=<span class="var">320</span>
+    )
+
+<span class="comment"># Detection only (no blur)</span>
+faces = bh.detect_faces(<span class="string">"photo.jpg"</span>)</pre>
+                </div>
+            </div>
+        </div>
+
+        <div id="cli" class="tab-content">
+            <div class="usage-content">
+                <div class="usage-info">
+                    <h3>Command Line Interface</h3>
+                    <p>Use bahlib directly from your terminal for quick anonymization tasks.</p>
+                    <ul>
+                        <li>Process single images or entire directories</li>
+                        <li>All Python API options available as flags</li>
+                        <li>Progress indicators for batch processing</li>
+                        <li>Preview results with --show flag</li>
+                    </ul>
+                </div>
+                <div class="usage-code">
+                    <div class="window-dots">
+                        <span class="dot"></span>
+                        <span class="dot"></span>
+                        <span class="dot"></span>
+                    </div>
+                    <pre><span class="comment"># Single image</span>
+<span class="var">$</span> bahlib image photo.jpg -o output.jpg
+
+<span class="comment"># Custom blur strength</span>
+<span class="var">$</span> bahlib image photo.jpg -o out.jpg --blur <span class="var">71</span>
+
+<span class="comment"># Group photo with tiled detection</span>
+<span class="var">$</span> bahlib image group.jpg -o out.jpg \
+    --tiled --tile-size <span class="var">320</span> --confidence <span class="var">0.3</span>
+
+<span class="comment"># Batch process a directory</span>
+<span class="var">$</span> bahlib batch ./photos ./output --recursive
+
+<span class="comment"># Preview result</span>
+<span class="var">$</span> bahlib image photo.jpg -o out.jpg --show</pre>
+                </div>
+            </div>
+        </div>
+
+        <div id="video" class="tab-content">
+            <div class="usage-content">
+                <div class="usage-info">
+                    <h3>Video Processing</h3>
+                    <p>Anonymize faces in video files or live webcam feeds with frame-by-frame detection.</p>
+                    <ul>
+                        <li>Process video files with preserved quality</li>
+                        <li>Real-time webcam anonymization</li>
+                        <li>Configurable detection confidence</li>
+                        <li>Press 'q' to stop webcam mode</li>
+                    </ul>
+                </div>
+                <div class="usage-code">
+                    <div class="window-dots">
+                        <span class="dot"></span>
+                        <span class="dot"></span>
+                        <span class="dot"></span>
+                    </div>
+                    <pre><span class="comment"># Process video file</span>
+<span class="var">$</span> bahlib video input.mp4 -o output.mp4
+
+<span class="comment"># With custom settings</span>
+<span class="var">$</span> bahlib video input.mp4 -o out.mp4 \
+    --blur <span class="var">51</span> --confidence <span class="var">0.4</span>
+
+<span class="comment"># Real-time webcam</span>
+<span class="var">$</span> bahlib webcam
+
+<span class="comment"># Python API</span>
+<span class="keyword">from</span> bahlib.video <span class="keyword">import</span> anonymize_video
+
+anonymize_video(
+    <span class="string">"input.mp4"</span>,
+    <span class="string">"output.mp4"</span>,
+    blur_strength=<span class="var">51</span>
+)</pre>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Example Section -->
+    <section class="example" id="example">
+        <div class="section-header">
+            <span class="section-badge">Example</span>
+            <h2>See It in <span class="gradient">Action</span></h2>
+            <p>Multiple anonymization methods available</p>
+        </div>
+
+        <div class="example-container">
+            <div class="examples-grid">
+                <!-- Blur Example -->
+                <div class="example-item">
+                    <h4>Gaussian Blur <span class="method-tag">--method blur</span></h4>
+                    <div class="example-comparison">
+                        <div class="example-card">
+                            <img src="test-input.jpg" alt="Original">
+                            <div class="example-label">Before</div>
+                        </div>
+                        <div class="example-arrow">→</div>
+                        <div class="example-card">
+                            <img src="test-output.jpg" alt="Blurred">
+                            <div class="example-label after">After</div>
+                        </div>
+                    </div>
+                    <div class="example-cmd">bahlib image photo.jpg -o out.jpg</div>
+                </div>
+
+                <!-- Pixelate + Blackbar Example -->
+                <div class="example-item">
+                    <h4>Pixelate + Blackbar <span class="method-tag">--method all</span></h4>
+                    <div class="example-comparison">
+                        <div class="example-card">
+                            <img src="guy.png" alt="Original">
+                            <div class="example-label">Before</div>
+                        </div>
+                        <div class="example-arrow">→</div>
+                        <div class="example-card">
+                            <img src="guy-pixelated.png" alt="Pixelated with blackbar">
+                            <div class="example-label after">After</div>
+                        </div>
+                    </div>
+                    <div class="example-cmd">bahlib image photo.jpg -o out.jpg --method all</div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer>
+        <h3>Bahlib</h3>
+        <p>Biometric Anonymizer Hub Library</p>
+        <div class="footer-links">
+            <a href="https://github.com/mergeandpanic/bahlib">GitHub</a>
+            <a href="https://pypi.org/project/bahlib/">PyPI</a>
+        </div>
+        <span class="footer-badge">MIT License</span>
+    </footer>
+
+    <script>
+        function showTab(tabId) {
+            // Hide all tabs
+            document.querySelectorAll('.tab-content').forEach(tab => {
+                tab.classList.remove('active');
+            });
+            document.querySelectorAll('.tab-btn').forEach(btn => {
+                btn.classList.remove('active');
+            });
+            
+            // Show selected tab
+            document.getElementById(tabId).classList.add('active');
+            event.target.classList.add('active');
+        }
+
+        // Smooth scroll for anchor links
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                document.querySelector(this.getAttribute('href')).scrollIntoView({
+                    behavior: 'smooth'
+                });
+            });
+        });
+    </script>
+</body>
+</html>
